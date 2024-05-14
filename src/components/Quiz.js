@@ -19,7 +19,7 @@ function Quiz() {
   const [currentData, setCurrentData] = useState(() => {
     console.log("RESTORING DATA")
     const savedData = localStorage.getItem('currentData');
-    const data = savedData ? JSON.parse(savedData) : structuredClone(verbs)
+    const data = savedData ? JSON.parse(savedData) : verbs
 
     return data
   });
