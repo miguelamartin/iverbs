@@ -13,13 +13,12 @@ function Quiz() {
   });
 
   const [currentData, setCurrentData] = useState(verbs);
-  const [score, setScore] = useState(0);
   const [remaining, setRemaining] = useState(count);
   const [currentVerb, setCurrentVerb] = useState(null);
   const [questionType, setQuestionType] = useState('');
   const [userInput, setUserInput] = useState({});
   const [showModal, setShowModal] = useState(false);
-  const presentInputRef = useRef(null)
+  const infinitiveInputRef = useRef(null)
   const pastInputRef = useRef(null)
   const [isCorrect, setIsCorrect] = useState(null);
   const [isShake, setIsShake] = useState(false);
@@ -32,10 +31,10 @@ function Quiz() {
   useEffect(() => {
     if (currentVerb && remaining > 0) {
       console.log(questionType)
-      if (questionType === 'present') {
+      if (questionType === 'infinitive') {
         pastInputRef?.current?.focus()
       } else {
-        presentInputRef?.current?.focus();
+        infinitiveInputRef?.current?.focus();
       }
     }
   }, [currentVerb, questionType, remaining]);
@@ -61,7 +60,7 @@ function Quiz() {
   };
 
   const randomQuestionType = () => {
-    const types = ['present', 'past', 'participle', 'spanish'];
+    const types = ['infinitive', 'past', 'participle', 'spanish'];
     return types[Math.floor(Math.random() * types.length)];
   };
 
@@ -86,34 +85,33 @@ function Quiz() {
   };
 
   const checkAnswer = () => {
-    const {present, past, participle, spanish} = currentVerb;
-    const {present: inputPresent, past: inputPast, participle: inputParticiple, spanish: inputSpanish} = userInput;
+    const {infinitive, past, participle, spanish} = currentVerb;
+    const {infinitive: inputPresent, past: inputPast, participle: inputParticiple, spanish: inputSpanish} = userInput;
     let correct = false;
-
     switch (questionType) {
-      case 'present':
+      case 'infinitive':
         correct =
-          inputPast?.toLowerCase() === past.toLowerCase() &&
-          inputParticiple?.toLowerCase() === participle.toLowerCase() &&
-          inputSpanish?.toLowerCase() === spanish.toLowerCase();
+          inputPast?.toLowerCase().replace(/\s+/g, '') === past.toLowerCase().replace(/\s+/g, '') &&
+          inputParticiple?.toLowerCase().replace(/\s+/g, '') === participle.toLowerCase().replace(/\s+/g, '') &&
+          inputSpanish?.toLowerCase().replace(/\s+/g, '').replace(/\//g, ',') === spanish.toLowerCase().replace(/\s+/g, '');
         break;
       case 'past':
         correct =
-          inputPresent?.toLowerCase() === present.toLowerCase() &&
-          inputParticiple?.toLowerCase() === participle.toLowerCase() &&
-          inputSpanish?.toLowerCase() === spanish.toLowerCase();
+          inputPresent?.toLowerCase().replace(/\s+/g, '') === infinitive.toLowerCase().replace(/\s+/g, '') &&
+          inputParticiple?.toLowerCase().replace(/\s+/g, '') === participle.toLowerCase().replace(/\s+/g, '') &&
+          inputSpanish?.toLowerCase().replace(/\s+/g, '').replace(/\//g, ',') === spanish.toLowerCase().replace(/\s+/g, '');
         break;
       case 'participle':
         correct =
-          inputPresent?.toLowerCase() === present.toLowerCase() &&
-          inputPast?.toLowerCase() === past.toLowerCase() &&
-          inputSpanish?.toLowerCase() === spanish.toLowerCase();
+          inputPresent?.toLowerCase().replace(/\s+/g, '') === infinitive.toLowerCase().replace(/\s+/g, '') &&
+          inputPast?.toLowerCase().replace(/\s+/g, '') === past.toLowerCase().replace(/\s+/g, '') &&
+          inputSpanish?.toLowerCase().replace(/\s+/g, '').replace(/\//g, ',') === spanish.toLowerCase().replace(/\s+/g, '');
         break;
       case 'spanish':
         correct =
-          inputPresent?.toLowerCase() === present.toLowerCase() &&
-          inputPast?.toLowerCase() === past.toLowerCase() &&
-          inputParticiple?.toLowerCase() === participle.toLowerCase();
+          inputPresent?.toLowerCase().replace(/\s+/g, '') === infinitive.toLowerCase().replace(/\s+/g, '') &&
+          inputPast?.toLowerCase().replace(/\s+/g, '') === past.toLowerCase().replace(/\s+/g, '') &&
+          inputParticiple?.toLowerCase().replace(/\s+/g, '').replace(/\//g, ',') === participle.toLowerCase().replace(/\s+/g, '');
         break;
       default:
         break;
@@ -121,8 +119,6 @@ function Quiz() {
 
 
     if (correct) {
-      setScore(score + 1);
-
       const newData = currentData
       const index = newData.indexOf(currentVerb)
 
@@ -135,9 +131,6 @@ function Quiz() {
       setRemaining((prevCount) => prevCount - 1);
 
       setIsCorrect(true)
-      setTimeout(() => {
-        setIsCorrect(null);
-      }, 1000);
       setIsShake(true)
       setTimeout(() => {
         setIsShake(false);
@@ -151,6 +144,9 @@ function Quiz() {
       setShowModal(true); // Show modal with correct answer
       setIsCorrect(false)
     }
+    setTimeout(() => {
+      setIsCorrect(null);
+    }, 1000);
   };
 
   const closeModal = () => {
@@ -163,19 +159,18 @@ function Quiz() {
 
       {currentVerb && (
         <div className="question">
-          <div className="score">Score: {score}</div>
           <div className="score">Remaining answers: {remaining}</div>
           <p>Enter the missing forms of the verb:</p>
           <div className="input-group">
             <input
-              ref={presentInputRef}
+              ref={infinitiveInputRef}
               type="text"
-              name="present"
-              value={questionType === 'present' ? currentVerb.present : userInput.present || ''}
+              name="infinitive"
+              value={questionType === 'infinitive' ? currentVerb.infinitive : userInput.infinitive || ''}
               onChange={handleInputChange}
               placeholder="Present"
-              readOnly={questionType === 'present'}
-              tabIndex={questionType === 'present' ? -1 : 1}
+              readOnly={questionType === 'infinitive'}
+              tabIndex={questionType === 'infinitive' ? -1 : 1}
               onKeyDown={handleKeyPress}
             />
             <input
@@ -184,7 +179,7 @@ function Quiz() {
               name="past"
               value={questionType === 'past' ? currentVerb.past : userInput.past || ''}
               onChange={handleInputChange}
-              placeholder="Past"
+              placeholder="Past simple"
               readOnly={questionType === 'past'}
               tabIndex={questionType === 'past' ? -1 : 1}
               onKeyDown={handleKeyPress}
@@ -194,7 +189,7 @@ function Quiz() {
               name="participle"
               value={questionType === 'participle' ? currentVerb.participle : userInput.participle || ''}
               onChange={handleInputChange}
-              placeholder="Participle"
+              placeholder="Past participle"
               readOnly={questionType === 'participle'}
               tabIndex={questionType === 'participle' ? -1 : 2}
               onKeyDown={handleKeyPress}
@@ -204,7 +199,7 @@ function Quiz() {
               name="spanish"
               value={questionType === 'spanish' ? currentVerb.spanish : userInput.spanish || ''}
               onChange={handleInputChange}
-              placeholder="Translation"
+              placeholder="Meaning"
               readOnly={questionType === 'spanish'}
               tabIndex={questionType === 'spanish' ? -1 : 3}
               onKeyDown={handleKeyPress}
@@ -216,11 +211,25 @@ function Quiz() {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
-          <p className="modal-text">Incorrect! The correct answer is:</p>
-            <p>Present: {currentVerb.present}</p>
-            <p>Past: {currentVerb.past}</p>
-            <p>Participle: {currentVerb.participle}</p>
-            <p>Translation: {currentVerb.spanish}</p>
+            <p className="modal-text">Incorrect! The correct answer is:</p>
+            <div className="modal-content">
+              <div className="modal-item">
+                <span><strong>Infinitive:</strong></span>
+                <span>{currentVerb.infinitive}</span>
+              </div>
+              <div className="modal-item">
+                <span><strong>Past simple:</strong></span>
+                <span>{currentVerb.past}</span>
+              </div>
+              <div className="modal-item">
+                <span><strong>Past participle:</strong></span>
+                <span>{currentVerb.participle}</span>
+              </div>
+              <div className="modal-item">
+                <span><strong>Meaning:</strong></span>
+                <span>{currentVerb.spanish}</span>
+              </div>
+            </div>
             <button className="modal-button" onClick={closeModal}>Close</button>
           </div>
         </div>

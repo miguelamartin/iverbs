@@ -90,6 +90,25 @@ body {
     cursor: pointer;
 }
 
+.modal-content {
+    display: block;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.modal-item {
+    display: flex;
+    justify-content: left;
+    margin-bottom: 10px;
+}
+
+.modal-item span:first-child {
+
+    align-self: flex-start;
+    margin-right: 10px;
+    flex-basis: 150px; /* Adjust as needed for alignment */
+}
+
 @media (max-width: 600px) {
     .input-group input,
     .input-group button {
