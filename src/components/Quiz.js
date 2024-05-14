@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useRef} from 'react';
 import './Quiz.css';
 import verbs from './data'; // Assuming you have a file with your verb data
+import correctSound from './correct.mp3'
+import incorrectSound from './incorrect.mp3'
 
 function Quiz() {
   var count = 0
@@ -19,7 +21,8 @@ function Quiz() {
   const [showModal, setShowModal] = useState(false);
   const presentInputRef = useRef(null)
   const pastInputRef = useRef(null)
-  const [isCorrect, setIsCorrect] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(null);
+  const [isShake, setIsShake] = useState(false);
 
 
   useEffect(() => {
@@ -27,32 +30,34 @@ function Quiz() {
   }, [currentData]); // Run
 
   useEffect(() => {
-    if (currentVerb) {
+    if (currentVerb && remaining > 0) {
       console.log(questionType)
       if (questionType === 'present') {
-        pastInputRef.current.focus()
+        pastInputRef?.current?.focus()
       } else {
-        presentInputRef.current.focus();
+        presentInputRef?.current?.focus();
       }
     }
   }, [currentVerb, questionType, remaining]);
 
   useEffect(() => {
-    if (isCorrect) {
-      if (questionType === 'present') {
-        pastInputRef.current.focus()
+    if (isCorrect != null) {
+      if (isCorrect) {
+        // Play sound effect
+        const audio = new Audio(correctSound);
+        audio.play();
       } else {
-        presentInputRef.current.focus();
+        const audio = new Audio(incorrectSound);
+        audio.play();
       }
     }
-  }, [currentVerb]);
+  }, [isCorrect]);
 
   const selectRandomVerb = () => {
     const randomVerb = currentData[Math.floor(Math.random() * currentData.length)];
     setQuestionType(randomQuestionType());
     setCurrentVerb(randomVerb);
     setUserInput({}); // Clear u
-    setIsCorrect(false)
   };
 
   const randomQuestionType = () => {
@@ -118,12 +123,6 @@ function Quiz() {
     if (correct) {
       setScore(score + 1);
 
-      setIsCorrect(true)
-      setTimeout(() => {
-        setIsCorrect(false);
-      }, 500);
-
-
       const newData = currentData
       const index = newData.indexOf(currentVerb)
 
@@ -134,6 +133,15 @@ function Quiz() {
 
       setCurrentData(newData);
       setRemaining((prevCount) => prevCount - 1);
+
+      setIsCorrect(true)
+      setTimeout(() => {
+        setIsCorrect(null);
+      }, 1000);
+      setIsShake(true)
+      setTimeout(() => {
+        setIsShake(false);
+      }, 1000);
       selectRandomVerb();
     } else {
       const newData = currentData
@@ -141,6 +149,7 @@ function Quiz() {
       newData[index].remaining = newData[index].remaining + 1
       setRemaining((prevCount) => prevCount + 1);
       setShowModal(true); // Show modal with correct answer
+      setIsCorrect(false)
     }
   };
 
@@ -151,10 +160,11 @@ function Quiz() {
 
   return (
     <div className="Quiz">
-      <div className="score">Score: {score}</div>
-      <div className="score">Remaining answers: {remaining}</div>
+
       {currentVerb && (
         <div className="question">
+          <div className="score">Score: {score}</div>
+          <div className="score">Remaining answers: {remaining}</div>
           <p>Enter the missing forms of the verb:</p>
           <div className="input-group">
             <input
@@ -194,27 +204,34 @@ function Quiz() {
               name="spanish"
               value={questionType === 'spanish' ? currentVerb.spanish : userInput.spanish || ''}
               onChange={handleInputChange}
-              placeholder="Spanish"
+              placeholder="Translation"
               readOnly={questionType === 'spanish'}
               tabIndex={questionType === 'spanish' ? -1 : 3}
               onKeyDown={handleKeyPress}
             />
-            <button className={isCorrect ? 'check-button shake' : 'check-button'} onClick={checkAnswer}>Check</button>
+            <button className={isShake ? 'check-button shake' : 'check-button'} onClick={checkAnswer}>Check</button>
           </div>
         </div>
       )}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
-            <p className="modal-text">Incorrect! The correct answer is:</p>
+          <p className="modal-text">Incorrect! The correct answer is:</p>
             <p>Present: {currentVerb.present}</p>
             <p>Past: {currentVerb.past}</p>
             <p>Participle: {currentVerb.participle}</p>
-            <p>Spanish: {currentVerb.spanish}</p>
+            <p>Translation: {currentVerb.spanish}</p>
             <button className="modal-button" onClick={closeModal}>Close</button>
           </div>
         </div>
       )}
+      {remaining === 0 && (
+        <div className="Congratulations">
+          <h2>Congratulations!</h2>
+          <p>You answered correctly to all the questions!</p>
+        </div>
+      )}
+
     </div>
   );
 }
