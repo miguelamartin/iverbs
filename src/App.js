@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>English Irregular Verbs Quiz</h1>
+        <h1>iVerbs Quiz</h1>
       </header>
       <Quiz />
     </div>
