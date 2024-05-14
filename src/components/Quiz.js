@@ -86,7 +86,7 @@ function Quiz() {
 
   const checkAnswer = () => {
     const {infinitive, past, participle, spanish} = currentVerb;
-    const {infinitive: inputPresent, past: inputPast, participle: inputParticiple, spanish: inputSpanish} = userInput;
+    const {infinitive: inputInfinitive, past: inputPast, participle: inputParticiple, spanish: inputSpanish} = userInput;
     let correct = false;
     switch (questionType) {
       case 'infinitive':
@@ -97,19 +97,19 @@ function Quiz() {
         break;
       case 'past':
         correct =
-          inputPresent?.toLowerCase().replace(/\s+/g, '') === infinitive.toLowerCase().replace(/\s+/g, '') &&
+          inputInfinitive?.toLowerCase().replace(/\s+/g, '') === infinitive.toLowerCase().replace(/\s+/g, '') &&
           inputParticiple?.toLowerCase().replace(/\s+/g, '') === participle.toLowerCase().replace(/\s+/g, '') &&
           inputSpanish?.toLowerCase().replace(/\s+/g, '').replace(/\//g, ',') === spanish.toLowerCase().replace(/\s+/g, '');
         break;
       case 'participle':
         correct =
-          inputPresent?.toLowerCase().replace(/\s+/g, '') === infinitive.toLowerCase().replace(/\s+/g, '') &&
+          inputInfinitive?.toLowerCase().replace(/\s+/g, '') === infinitive.toLowerCase().replace(/\s+/g, '') &&
           inputPast?.toLowerCase().replace(/\s+/g, '') === past.toLowerCase().replace(/\s+/g, '') &&
           inputSpanish?.toLowerCase().replace(/\s+/g, '').replace(/\//g, ',') === spanish.toLowerCase().replace(/\s+/g, '');
         break;
       case 'spanish':
         correct =
-          inputPresent?.toLowerCase().replace(/\s+/g, '') === infinitive.toLowerCase().replace(/\s+/g, '') &&
+          inputInfinitive?.toLowerCase().replace(/\s+/g, '') === infinitive.toLowerCase().replace(/\s+/g, '') &&
           inputPast?.toLowerCase().replace(/\s+/g, '') === past.toLowerCase().replace(/\s+/g, '') &&
           inputParticiple?.toLowerCase().replace(/\s+/g, '').replace(/\//g, ',') === participle.toLowerCase().replace(/\s+/g, '');
         break;
@@ -168,10 +168,11 @@ function Quiz() {
               name="infinitive"
               value={questionType === 'infinitive' ? currentVerb.infinitive : userInput.infinitive || ''}
               onChange={handleInputChange}
-              placeholder="Present"
+              placeholder="Infinitive"
               readOnly={questionType === 'infinitive'}
               tabIndex={questionType === 'infinitive' ? -1 : 1}
               onKeyDown={handleKeyPress}
+              autoComplete="off"
             />
             <input
               ref={pastInputRef}
@@ -183,6 +184,7 @@ function Quiz() {
               readOnly={questionType === 'past'}
               tabIndex={questionType === 'past' ? -1 : 1}
               onKeyDown={handleKeyPress}
+              autoComplete="off"
             />
             <input
               type="text"
@@ -193,6 +195,7 @@ function Quiz() {
               readOnly={questionType === 'participle'}
               tabIndex={questionType === 'participle' ? -1 : 2}
               onKeyDown={handleKeyPress}
+              autoComplete="off"
             />
             <input
               type="text"
@@ -203,6 +206,7 @@ function Quiz() {
               readOnly={questionType === 'spanish'}
               tabIndex={questionType === 'spanish' ? -1 : 3}
               onKeyDown={handleKeyPress}
+              autoComplete="off"
             />
             <button className={isShake ? 'check-button shake' : 'check-button'} onClick={checkAnswer}>Check</button>
           </div>
