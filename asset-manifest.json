@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/iverbs/static/css/main.ce32fa21.css",
-    "main.js": "/iverbs/static/js/main.b7c8d00f.js",
+    "main.js": "/iverbs/static/js/main.bf39367a.js",
     "static/media/correct.mp3": "/iverbs/static/media/correct.3d0f9d16165b7a7b1a7d.mp3",
     "static/media/incorrect.mp3": "/iverbs/static/media/incorrect.94c07980232ec9d3104e.mp3",
     "index.html": "/iverbs/index.html",
     "main.ce32fa21.css.map": "/iverbs/static/css/main.ce32fa21.css.map",
-    "main.b7c8d00f.js.map": "/iverbs/static/js/main.b7c8d00f.js.map"
+    "main.bf39367a.js.map": "/iverbs/static/js/main.bf39367a.js.map"
   },
   "entrypoints": [
     "static/css/main.ce32fa21.css",
-    "static/js/main.b7c8d00f.js"
+    "static/js/main.bf39367a.js"
   ]
 }
