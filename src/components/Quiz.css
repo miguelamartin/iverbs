@@ -56,6 +56,18 @@ body {
     flex: 1;
 }
 
+.reset-button {
+    font-size: 16px;
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    flex: 1;
+}
+
 .modal-overlay {
     position: fixed;
     top: 0;

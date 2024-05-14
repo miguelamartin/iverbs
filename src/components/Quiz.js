@@ -5,15 +5,8 @@ import correctSound from './correct.mp3'
 import incorrectSound from './incorrect.mp3'
 
 function Quiz() {
-  var count = 0
 
-  verbs.forEach((item) => {
-    // Perform some operation on each item
-    count = count + item.remaining
-  });
-
-  const [currentData, setCurrentData] = useState(verbs);
-  const [remaining, setRemaining] = useState(count);
+  const [remaining, setRemaining] = useState(0);
   const [currentVerb, setCurrentVerb] = useState(null);
   const [questionType, setQuestionType] = useState('');
   const [userInput, setUserInput] = useState({});
@@ -23,6 +16,25 @@ function Quiz() {
   const [isCorrect, setIsCorrect] = useState(null);
   const [isShake, setIsShake] = useState(false);
 
+  const [currentData, setCurrentData] = useState(() => {
+    console.log("RESTORING DATA")
+    const savedData = localStorage.getItem('currentData');
+    const data = savedData ? JSON.parse(savedData) : structuredClone(verbs)
+
+    return data
+  });
+
+
+  useEffect(() => {
+    let count = 0
+    currentData.forEach((item) => {
+      // Perform some operation on each item
+      count = count + item.remaining
+    });
+
+    setRemaining(count)
+    selectRandomVerb();
+  }, [currentData]); // Run
 
   useEffect(() => {
     selectRandomVerb();
@@ -136,6 +148,7 @@ function Quiz() {
         setIsShake(false);
       }, 1000);
       selectRandomVerb();
+      localStorage.setItem('currentData', JSON.stringify(currentData));
     } else {
       const newData = currentData
       const index = newData.indexOf(currentVerb)
@@ -143,6 +156,8 @@ function Quiz() {
       setRemaining((prevCount) => prevCount + 1);
       setShowModal(true); // Show modal with correct answer
       setIsCorrect(false)
+      setCurrentData(newData);
+      localStorage.setItem('currentData', JSON.stringify(currentData));
     }
     setTimeout(() => {
       setIsCorrect(null);
@@ -153,6 +168,12 @@ function Quiz() {
     setShowModal(false);
     selectRandomVerb();
   };
+
+  const resetCurrentData = () => {
+    console.log("RESET")
+    setCurrentData(verbs)
+    localStorage.clear()
+  }
 
   return (
     <div className="Quiz">
@@ -244,6 +265,8 @@ function Quiz() {
           <p>You answered correctly to all the questions!</p>
         </div>
       )}
+
+      <button className={'reset-button'} onClick={resetCurrentData}>Reset</button>
 
     </div>
   );
