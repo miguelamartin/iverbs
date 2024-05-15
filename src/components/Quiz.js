@@ -98,7 +98,12 @@ function Quiz() {
 
   const checkAnswer = () => {
     const {infinitive, past, participle, spanish} = currentVerb;
-    const {infinitive: inputInfinitive, past: inputPast, participle: inputParticiple, spanish: inputSpanish} = userInput;
+    const {
+      infinitive: inputInfinitive,
+      past: inputPast,
+      participle: inputParticiple,
+      spanish: inputSpanish
+    } = userInput;
     let correct = false;
     switch (questionType) {
       case 'infinitive':
@@ -188,8 +193,9 @@ function Quiz() {
               type="text"
               name="infinitive"
               value={questionType === 'infinitive' ? currentVerb.infinitive : userInput.infinitive || ''}
+              className={questionType === 'infinitive' ? 'input-question' : ''}
               onChange={handleInputChange}
-              placeholder="Infinitive"
+              placeholder="infinitive"
               readOnly={questionType === 'infinitive'}
               tabIndex={questionType === 'infinitive' ? -1 : 1}
               onKeyDown={handleKeyPress}
@@ -200,8 +206,9 @@ function Quiz() {
               type="text"
               name="past"
               value={questionType === 'past' ? currentVerb.past : userInput.past || ''}
+              className={questionType === 'past' ? 'input-question' : ''}
               onChange={handleInputChange}
-              placeholder="Past simple"
+              placeholder="past simple"
               readOnly={questionType === 'past'}
               tabIndex={questionType === 'past' ? -1 : 1}
               onKeyDown={handleKeyPress}
@@ -211,8 +218,9 @@ function Quiz() {
               type="text"
               name="participle"
               value={questionType === 'participle' ? currentVerb.participle : userInput.participle || ''}
+              className={questionType === 'participle' ? 'input-question' : ''}
               onChange={handleInputChange}
-              placeholder="Past participle"
+              placeholder="past participle"
               readOnly={questionType === 'participle'}
               tabIndex={questionType === 'participle' ? -1 : 2}
               onKeyDown={handleKeyPress}
@@ -222,13 +230,17 @@ function Quiz() {
               type="text"
               name="spanish"
               value={questionType === 'spanish' ? currentVerb.spanish : userInput.spanish || ''}
+              className={questionType === 'spanish' ? 'input-question spanish' : 'spanish'}
               onChange={handleInputChange}
-              placeholder="Meaning"
+              placeholder="meaning"
               readOnly={questionType === 'spanish'}
               tabIndex={questionType === 'spanish' ? -1 : 3}
               onKeyDown={handleKeyPress}
               autoComplete="off"
             />
+
+          </div>
+          <div>
             <button className={isShake ? 'check-button shake' : 'check-button'} onClick={checkAnswer}>Check</button>
           </div>
         </div>
@@ -236,7 +248,9 @@ function Quiz() {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
+            <div>
             <p className="modal-text">Incorrect! The correct answer is:</p>
+            </div>
             <div className="modal-content">
               <div className="modal-item">
                 <span><strong>Infinitive:</strong></span>
@@ -255,8 +269,11 @@ function Quiz() {
                 <span>{currentVerb.spanish}</span>
               </div>
             </div>
-            <button className="modal-button" onClick={closeModal}>Close</button>
+            <div>
+              <button className="modal-button" onClick={closeModal}>Close</button>
+            </div>
           </div>
+
         </div>
       )}
       {remaining === 0 && (
