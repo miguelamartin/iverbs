@@ -200,6 +200,7 @@ function Quiz() {
               tabIndex={questionType === 'infinitive' ? -1 : 1}
               onKeyDown={handleKeyPress}
               autoComplete="off"
+              spellCheck="false"
             />
             <input
               ref={pastInputRef}
@@ -213,6 +214,7 @@ function Quiz() {
               tabIndex={questionType === 'past' ? -1 : 1}
               onKeyDown={handleKeyPress}
               autoComplete="off"
+              spellCheck="false"
             />
             <input
               type="text"
@@ -225,6 +227,7 @@ function Quiz() {
               tabIndex={questionType === 'participle' ? -1 : 2}
               onKeyDown={handleKeyPress}
               autoComplete="off"
+              spellCheck="false"
             />
             <input
               type="text"
@@ -237,6 +240,7 @@ function Quiz() {
               tabIndex={questionType === 'spanish' ? -1 : 3}
               onKeyDown={handleKeyPress}
               autoComplete="off"
+              spellCheck="false"
             />
 
           </div>
