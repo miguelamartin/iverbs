@@ -177,6 +177,7 @@ function Quiz() {
   const resetCurrentData = () => {
     console.log("RESET")
     setCurrentData(verbs)
+    selectRandomVerb()
     localStorage.clear()
   }
 
