@@ -4,8 +4,11 @@ import correctSound from './correct.mp3'
 import incorrectSound from './incorrect.mp3'
 import verbs1 from "./verbs1";
 import verbs2 from "./verbs2";
+import verbs3 from "./verbs3";
 
 function Quiz() {
+
+  const storageKey = 'iverbs'
 
   const [remaining, setRemaining] = useState(0);
   const [currentVerb, setCurrentVerb] = useState(null);
@@ -20,7 +23,7 @@ function Quiz() {
   const [isShake, setIsShake] = useState(false);
 
   const [currentData, setCurrentData] = useState(() => {
-    let data = localStorage.getItem('currentData');
+    let data = localStorage.getItem(storageKey);
     if (!data) {
       setShowInit(true)
       return null
@@ -136,7 +139,7 @@ function Quiz() {
     } else {
       setShowModal(true)
     }
-    localStorage.setItem('currentData', JSON.stringify(currentData));
+    localStorage.setItem(storageKey, JSON.stringify(currentData));
   };
 
   const closeModal = () => {
@@ -153,6 +156,7 @@ function Quiz() {
       count = count + item.remaining
     });
     setRemaining(count)
+    localStorage.setItem(storageKey, JSON.stringify(verbs));
   }
 
   const showResetModal = () => {
@@ -163,21 +167,32 @@ function Quiz() {
     setShowReset(false)
   }
 
-  const verbsBeEat = () => {
+  const setVerbs1 = () => {
     resetCurrentData(verbs1)
     setShowReset(false)
     setShowInit(false)
   }
 
-  const verbsKnowSleep = () => {
+  const setVerbs2 = () => {
     resetCurrentData(verbs2)
+    setShowReset(false)
+    setShowInit(false)
+  }
+
+  const setVerbs3 = () => {
+    resetCurrentData(verbs3)
+    setShowReset(false)
+    setShowInit(false)
+  }
+
+  const setAllVerbs = () => {
+    resetCurrentData(verbs1.concat(verbs2).concat(verbs3))
     setShowReset(false)
     setShowInit(false)
   }
 
   return (
     <div>
-
       {currentData && currentVerb && remaining && (
         <div className="Quiz">
           <div className="question">
@@ -238,7 +253,6 @@ function Quiz() {
                 autoComplete="off"
                 spellCheck="false"
               />
-
             </div>
             <div>
               <button className={isShake ? 'check-button shake' : 'check-button'} onClick={checkAnswer}>Check</button>
@@ -285,8 +299,10 @@ function Quiz() {
             </div>
             <div className="modal-content">
               <div>
-                <button className="check-button" onClick={verbsBeEat}>Verbs be - eat</button>
-                <button className="check-button" onClick={verbsKnowSleep}>Verbs know - sleep</button>
+                <button className="check-button" onClick={setVerbs1}>Verbs be - eat</button>
+                <button className="check-button" onClick={setVerbs2}>Verbs know - sleep</button>
+                <button className="check-button" onClick={setVerbs3}>Verbs smell - write</button>
+                <button className="check-button" onClick={setAllVerbs}>All together!!!</button>
               </div>
             </div>
             <div>
@@ -304,8 +320,10 @@ function Quiz() {
             </div>
             <div className="modal-content">
               <div>
-                <button className="check-button" onClick={verbsBeEat}>Verbs be - eat</button>
-                <button className="check-button" onClick={verbsKnowSleep}>Verbs know - sleep</button>
+                <button className="check-button" onClick={setVerbs1}>Verbs be - eat</button>
+                <button className="check-button" onClick={setVerbs2}>Verbs know - sleep</button>
+                <button className="check-button" onClick={setVerbs3}>Verbs smell - write</button>
+                <button className="check-button" onClick={setAllVerbs}>All together!!!</button>
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 const verbs2 = [
   {infinitive: 'know', past: 'knew', participle: 'known', spanish: 'saber, conocer', remaining: 2},
   {infinitive: 'learn', past: 'learnt', participle: 'learnt', spanish: 'aprender', remaining: 2},
-  {infinitive: 'leave', past: 'left', participle: 'left', spanish: 'salir, abandonar', remaining: 2},
+  {infinitive: 'leave', past: 'left', participle: 'left', spanish: 'salir, abandonar, dejar', remaining: 2},
   {infinitive: 'lend', past: 'lent', participle: 'lent', spanish: 'prestar', remaining: 2},
   {infinitive: 'let', past: 'let', participle: 'let', spanish: 'permitir', remaining: 2},
   {infinitive: 'lose', past: 'lost', participle: 'lost', spanish: 'perder', remaining: 2},
@@ -10,6 +10,7 @@ const verbs2 = [
   {infinitive: 'pay', past: 'paid', participle: 'paid', spanish: 'pagar', remaining: 2},
   {infinitive: 'put', past: 'put', participle: 'put', spanish: 'poner', remaining: 2},
   {infinitive: 'read', past: 'read', participle: 'read', spanish: 'leer', remaining: 2},
+  {infinitive: 'ride', past: 'rode', participle: 'ridden', spanish: 'montar', remaining: 2},
   {infinitive: 'ring', past: 'rang', participle: 'rung', spanish: 'sonar', remaining: 2},
   {infinitive: 'run', past: 'ran', participle: 'run', spanish: 'correr', remaining: 2},
   {infinitive: 'say', past: 'said', participle: 'said', spanish: 'decir', remaining: 2},
