@@ -102,7 +102,7 @@ function Quiz() {
         closeModal();
       } else if (showFullTranslation && allowCloseTranslation) {
         hideFullTranslation()
-      } else if (!showReset) {
+      } else if (!showReset && !showFullTranslation) {
         checkAnswer();
       }
     }
