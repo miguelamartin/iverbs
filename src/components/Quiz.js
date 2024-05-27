@@ -135,7 +135,7 @@ function Quiz() {
       }
     })
 
-    if (actualTokens.length < expectedTokens.length) {
+    if (correct && actualTokens.length < expectedTokens.length) {
       setShowFullTranslation(true)
       setFullTranslation(expected)
       setAllowCloseTranslation(false);
