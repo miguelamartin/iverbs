@@ -2,7 +2,7 @@ const verbs1 = [
   {infinitive: 'be', past: 'was/were', participle: 'been', spanish: 'ser, estar', remaining: 2},
   {infinitive: 'become', past: 'became', participle: 'become', spanish: 'convertirse, llegar a ser', remaining: 2},
   {infinitive: 'begin', past: 'began', participle: 'begun', spanish: 'empezar', remaining: 2},
-  {infinitive: 'bite', past: 'bit', participle: 'bitten', spanish: 'morder', remaining: 2},
+  {infinitive: 'bite', past: 'bit', participle: 'bitten', spanish: 'morder, picar', remaining: 2},
   {infinitive: 'break', past: 'broke', participle: 'broken', spanish: 'romper', remaining: 2},
   {infinitive: 'bring', past: 'brought', participle: 'brought', spanish: 'traer', remaining: 2},
   {infinitive: 'build', past: 'built', participle: 'built', spanish: 'construir', remaining: 2},

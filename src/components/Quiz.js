@@ -15,8 +15,12 @@ function Quiz() {
   const [questionType, setQuestionType] = useState('');
   const [userInput, setUserInput] = useState({});
   const [showModal, setShowModal] = useState(false);
+  const [showFullTranslation, setShowFullTranslation] = useState(false);
+  const [fullTranslation, setFullTranslation] = useState(null);
   const [showInit, setShowInit] = useState(false);
+  const [countDown, setCountdown] = useState(0);
   const [showReset, setShowReset] = useState(false);
+  const [allowCloseTranslation, setAllowCloseTranslation] = useState(false);
   const infinitiveInputRef = useRef(null)
   const pastInputRef = useRef(null)
   const [isCorrect, setIsCorrect] = useState(null);
@@ -31,7 +35,6 @@ function Quiz() {
     return JSON.parse(data)
   });
 
-
   useEffect(() => {
     if (currentData) {
       let count = 0
@@ -43,6 +46,15 @@ function Quiz() {
       setRemaining(count)
     }
   }, [currentData]); // Run
+
+  useEffect(() => {
+    if (countDown > 0) {
+      const timerId = setTimeout(() => {
+        setCountdown(countDown - 1);
+      }, 1000);
+      return () => clearTimeout(timerId);
+    }
+  }, [countDown]);
 
   useEffect(() => {
     if (currentVerb && remaining > 0) {
@@ -88,7 +100,9 @@ function Quiz() {
     if (e.key === 'Enter') {
       if (showModal) {
         closeModal();
-      } else {
+      } else if (showFullTranslation && allowCloseTranslation) {
+        hideFullTranslation()
+      } else if (!showReset) {
         checkAnswer();
       }
     }
@@ -96,8 +110,43 @@ function Quiz() {
       if (showModal) {
         closeModal();
       }
+      if (showFullTranslation) {
+        hideFullTranslation()
+      }
     }
   };
+
+  const checkSimple = (actual, expected) => {
+    return actual?.toLowerCase().replace(/\s+/g, '') === expected.toLowerCase().replace(/\s+/g, '')
+  }
+
+  const checkSpanish = (actual, expected) => {
+    const actualTokens = actual?.toLowerCase().replace(/\s+/g, '').split(",")
+    const expectedTokens = expected?.toLowerCase().replace(/\s+/g, '').split(",")
+
+    console.log("actualTokens: ", actualTokens)
+    console.log("expectedTokens: ", expectedTokens)
+    let correct = true
+
+    actualTokens.forEach((item) => {
+      console.log("item: ", item)
+      if (!expectedTokens.includes(item)) {
+        correct = false
+      }
+    })
+
+    if (actualTokens.length < expectedTokens.length) {
+      setShowFullTranslation(true)
+      setFullTranslation(expected)
+      setAllowCloseTranslation(false);
+      setTimeout(() => {
+        setAllowCloseTranslation(true);
+      }, 5000);
+      setCountdown(5)
+    }
+
+    return correct
+  }
 
   const checkAnswer = () => {
     const {infinitive, past, participle, spanish} = currentVerb;
@@ -109,10 +158,10 @@ function Quiz() {
     } = userInput;
 
     let correct =
-      (questionType === 'infinitive' || inputInfinitive?.toLowerCase().replace(/\s+/g, '') === infinitive.toLowerCase().replace(/\s+/g, '')) &&
-      (questionType === 'past' || inputPast?.toLowerCase().replace(/\s+/g, '') === past.toLowerCase().replace(/\s+/g, '')) &&
-      (questionType === 'participle' || inputParticiple?.toLowerCase().replace(/\s+/g, '') === participle.toLowerCase().replace(/\s+/g, '')) &&
-      (questionType === 'spanish' || inputSpanish?.toLowerCase().replace(/\s+/g, '').replace(/\//g, ',') === spanish.toLowerCase().replace(/\s+/g, ''));
+      (questionType === 'infinitive' || checkSimple(inputInfinitive, infinitive)) &&
+      (questionType === 'past' || checkSimple(inputPast, past)) &&
+      (questionType === 'participle' || checkSimple(inputParticiple, participle)) &&
+      (questionType === 'spanish' || checkSpanish(inputSpanish, spanish))
 
     const increment = correct ? -1 : 1
     const index = currentData.indexOf(currentVerb)
@@ -166,6 +215,11 @@ function Quiz() {
   const hideResetModal = () => {
     setShowReset(false)
   }
+
+  const hideFullTranslation = () => {
+    setShowFullTranslation(false)
+  }
+
 
   const setVerbs1 = () => {
     resetCurrentData(verbs1)
@@ -325,6 +379,22 @@ function Quiz() {
                 <button className="check-button" onClick={setVerbs3}>Verbs smell - write</button>
                 <button className="check-button" onClick={setAllVerbs}>All together!!!</button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {showFullTranslation && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <div>
+              <p className="modal-text">Good job!!! Correct answer!</p>
+              <p className="modal-text"> This verb has more meanings. Try writing them all down next time. 💪</p>
+              <p className="modal-text-green">{fullTranslation}</p>
+            </div>
+            <div>
+              {allowCloseTranslation && (<button className="modal-green-button" onClick={hideFullTranslation}>Close</button>)}
+              {!allowCloseTranslation && (<button className="modal-gray-button">Wait {countDown} seconds...</button>)}
+
             </div>
           </div>
         </div>

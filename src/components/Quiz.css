@@ -94,12 +94,40 @@ body {
     font-size: 18px;
     margin-bottom: 20px;
 }
+.modal-text-green {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #4caf50;
+}
 
 .modal-button {
     font-size: 16px;
     padding: 10px 50px;
     margin: 5px;
     background-color: #f44336;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    flex: 1;
+}
+
+.modal-green-button {
+    font-size: 16px;
+    padding: 10px 50px;
+    margin: 5px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    flex: 1;
+}
+.modal-gray-button {
+    font-size: 16px;
+    padding: 10px 50px;
+    margin: 5px;
+    background-color: gray;
     color: #fff;
     border: none;
     border-radius: 5px;
