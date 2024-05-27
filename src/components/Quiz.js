@@ -261,7 +261,7 @@ function Quiz() {
                 className={questionType === 'infinitive' ? 'input-question' : ''}
                 onChange={handleInputChange}
                 placeholder="infinitive"
-                readOnly={questionType === 'infinitive'}
+                readOnly={questionType === 'infinitive' || showFullTranslation || showReset || showModal}
                 tabIndex={questionType === 'infinitive' ? -1 : 1}
                 onKeyDown={handleKeyPress}
                 autoComplete="off"
@@ -275,7 +275,7 @@ function Quiz() {
                 className={questionType === 'past' ? 'input-question' : ''}
                 onChange={handleInputChange}
                 placeholder="past simple"
-                readOnly={questionType === 'past'}
+                readOnly={questionType === 'past' || showFullTranslation || showReset || showModal}
                 tabIndex={questionType === 'past' ? -1 : 1}
                 onKeyDown={handleKeyPress}
                 autoComplete="off"
@@ -288,7 +288,7 @@ function Quiz() {
                 className={questionType === 'participle' ? 'input-question' : ''}
                 onChange={handleInputChange}
                 placeholder="past participle"
-                readOnly={questionType === 'participle'}
+                readOnly={questionType === 'participle' || showFullTranslation || showReset || showModal}
                 tabIndex={questionType === 'participle' ? -1 : 2}
                 onKeyDown={handleKeyPress}
                 autoComplete="off"
@@ -301,7 +301,7 @@ function Quiz() {
                 className={questionType === 'spanish' ? 'input-question spanish' : 'spanish'}
                 onChange={handleInputChange}
                 placeholder="meaning"
-                readOnly={questionType === 'spanish'}
+                readOnly={questionType === 'spanish'|| showFullTranslation || showReset || showModal}
                 tabIndex={questionType === 'spanish' ? -1 : 3}
                 onKeyDown={handleKeyPress}
                 autoComplete="off"
@@ -392,9 +392,9 @@ function Quiz() {
               <p className="modal-text-green">{fullTranslation}</p>
             </div>
             <div>
-              {allowCloseTranslation && (<button className="modal-green-button" onClick={hideFullTranslation}>Close</button>)}
+              {allowCloseTranslation && (
+                <button className="modal-green-button" onClick={hideFullTranslation}>Close</button>)}
               {!allowCloseTranslation && (<button className="modal-gray-button">Wait {countDown} seconds...</button>)}
-
             </div>
           </div>
         </div>
