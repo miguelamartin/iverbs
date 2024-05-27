@@ -116,20 +116,21 @@ function Quiz() {
     }
   };
 
+  const uniform = (text) => {
+    return text?.toLowerCase().replace(/\s+/g, '').replace(/\/+/, ',')
+  }
+
   const checkSimple = (actual, expected) => {
-    return actual?.toLowerCase().replace(/\s+/g, '') === expected.toLowerCase().replace(/\s+/g, '')
+    return uniform(actual) === uniform(expected)
   }
 
   const checkSpanish = (actual, expected) => {
-    const actualTokens = actual?.toLowerCase().replace(/\s+/g, '').split(",")
-    const expectedTokens = expected?.toLowerCase().replace(/\s+/g, '').split(",")
-
-    console.log("actualTokens: ", actualTokens)
-    console.log("expectedTokens: ", expectedTokens)
+    const actualTokens = uniform(actual)?.split(",").filter(item => item.length !== 0)
+    const expectedTokens = uniform(expected)?.split(",").filter(item => item.length !== 0)
     let correct = true
-
+    console.log(actualTokens)
+    console.log(expectedTokens)
     actualTokens.forEach((item) => {
-      console.log("item: ", item)
       if (!expectedTokens.includes(item)) {
         correct = false
       }
@@ -301,7 +302,7 @@ function Quiz() {
                 className={questionType === 'spanish' ? 'input-question spanish' : 'spanish'}
                 onChange={handleInputChange}
                 placeholder="meaning"
-                readOnly={questionType === 'spanish'|| showFullTranslation || showReset || showModal}
+                readOnly={questionType === 'spanish' || showFullTranslation || showReset || showModal}
                 tabIndex={questionType === 'spanish' ? -1 : 3}
                 onKeyDown={handleKeyPress}
                 autoComplete="off"
